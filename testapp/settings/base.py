@@ -167,7 +167,7 @@ MEDIA_URL = "/media/"
 
 # Wagtail settings
 
-WAGTAIL_SITE_NAME = "testapp"
+WAGTAIL_SITE_NAME = "Test App"
 
 # Search
 # https://docs.wagtail.org/en/stable/topics/search/backends.html
@@ -180,3 +180,6 @@ WAGTAILSEARCH_BACKENDS = {
 # Base URL to use when referring to full URLs within the Wagtail admin backend -
 # e.g. in notification emails. Don't include '/admin' or a trailing slash
 WAGTAILADMIN_BASE_URL = "http://localhost:8000"
+
+
+DEFAULT_AUTO_FIELD = "django.db.models.AutoField"
