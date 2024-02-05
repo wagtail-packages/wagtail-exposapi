@@ -26,7 +26,8 @@ classifiers = [
 ]
 requires-python = ">=3.8"
 dependencies =[
-    "Wagtail>=4.1",
+    "Wagtail>=4.1,<6.0",
+    "Django>=3.2,<5.0",
 ]
 
 [project.optional-dependencies]
@@ -34,6 +35,9 @@ development = [
     "black==23.12.1",
     "flake8==7.0.0",
     "isort==5.13.2",
+    "pytest==8.0.0",
+    "pytest-cov==4.1.0",
+    "pytest-django==4.8.0",
 ]
 
 [tool.setuptools.packages.find]
