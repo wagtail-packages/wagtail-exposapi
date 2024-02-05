@@ -1,3 +1,4 @@
+from re import template
 from django.db import models
 from django.http import HttpResponse
 from modelcluster.fields import ParentalKey
@@ -14,14 +15,15 @@ from wagtail.snippets.models import register_snippet
 
 
 class HomePage(Page):
-    pass
+    template = "home/home_page.html"
 
 
 class SecondHomePage(Page):
-    pass
+    template = "home/second_home_page.html"
 
 
 class StandardPageOne(Page):
+    template = "home/standard_page_one.html"
     body = RichTextField(blank=True)
 
     content_panels = Page.content_panels + [
@@ -30,6 +32,7 @@ class StandardPageOne(Page):
 
 
 class StandardPageTwo(Page):
+    template = "home/standard_page_two.html"
     body = RichTextField(blank=True)
 
     content_panels = Page.content_panels + [
@@ -38,6 +41,7 @@ class StandardPageTwo(Page):
 
 
 class StandardPageThree(Page):
+    template = "home/standard_page_three.html"
     body = RichTextField(blank=True)
 
     content_panels = Page.content_panels + [
@@ -52,6 +56,7 @@ class FormFieldOne(AbstractFormField):
 
 
 class FormPageOne(AbstractEmailForm):
+    template = "home/form_page_one.html"
     intro = RichTextField(blank=True)
     thank_you_text = RichTextField(blank=True)
 
@@ -81,6 +86,7 @@ class FormFieldTwo(AbstractFormField):
 
 
 class FormPageTwo(AbstractEmailForm):
+    template = "home/form_page_two.html"
     intro = RichTextField(blank=True)
     thank_you_text = RichTextField(blank=True)
 
