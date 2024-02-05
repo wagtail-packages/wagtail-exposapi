@@ -1,0 +1,8 @@
+[run]
+omit = 
+    */sandbox/*
+    */tests/*
+    */venv/*
+    */.tox/*
+    */.eggs/*
+    */manage.py

@@ -34,8 +34,8 @@ EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 # Application definition
 
 INSTALLED_APPS = [
-    "testapp.home",
-    "testapp.search",
+    "sandbox.home",
+    "sandbox.search",
     "wagtail.contrib.forms",
     "wagtail.contrib.redirects",
     "wagtail.contrib.search_promotions",
@@ -62,6 +62,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "django.contrib.sitemaps",
     "exposapi",
+    "tests",
 ]
 
 MIDDLEWARE = [
@@ -75,7 +76,7 @@ MIDDLEWARE = [
     "wagtail.contrib.redirects.middleware.RedirectMiddleware",
 ]
 
-ROOT_URLCONF = "testapp.urls"
+ROOT_URLCONF = "sandbox.urls"
 
 TEMPLATES = [
     {

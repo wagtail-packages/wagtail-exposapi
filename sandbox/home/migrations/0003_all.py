@@ -9,7 +9,7 @@ from django.db import migrations, models
 
 class Migration(migrations.Migration):
     dependencies = [
-        ("testapp_home", "0002_create_homepage"),
+        ("sandbox_home", "0002_create_homepage"),
     ]
 
     operations = [
@@ -527,7 +527,7 @@ class Migration(migrations.Migration):
                     modelcluster.fields.ParentalKey(
                         on_delete=django.db.models.deletion.CASCADE,
                         related_name="form_fields",
-                        to="testapp_home.formpageone",
+                        to="sandbox_home.formpageone",
                     ),
                 ),
             ],
@@ -623,7 +623,7 @@ class Migration(migrations.Migration):
                     modelcluster.fields.ParentalKey(
                         on_delete=django.db.models.deletion.CASCADE,
                         related_name="form_fields",
-                        to="testapp_home.formpagetwo",
+                        to="sandbox_home.formpagetwo",
                     ),
                 ),
             ],

@@ -109,22 +109,53 @@ LISTING_PAGES_CONFIG = [
 ]
 
 
-def get_listing_pages_config():
-    return LISTING_PAGES_CONFIG
+def get_config() -> dict:
+    if hasattr(settings, "EXPOSAPI_CONFIG"):
+        base_url = (
+            settings.EXPOSAPI_CONFIG.get("base_url")
+            if settings.EXPOSAPI_CONFIG.get("base_url")
+            else ""
+        )
+        listing_exclude = (
+            settings.EXPOSAPI_CONFIG.get("listing_exclude")
+            if settings.EXPOSAPI_CONFIG.get("listing_exclude")
+            else []
+        )
+        listing_pages_config = (
+            settings.EXPOSAPI_CONFIG.get("listing_pages_config")
+            if settings.EXPOSAPI_CONFIG.get("listing_pages_config")
+            else LISTING_PAGES_CONFIG
+        )
+        apps_exclude = (
+            settings.EXPOSAPI_CONFIG.get("apps_exclude")
+            if settings.EXPOSAPI_CONFIG.get("apps_exclude")
+            else []
+        )
+    else:
+        base_url = ""
+        listing_exclude = []
+        listing_pages_config = LISTING_PAGES_CONFIG
+        apps_exclude = []
+
+    return {
+        "base_url": base_url,
+        "listing_exclude": listing_exclude,
+        "listing_pages_config": listing_pages_config,
+        "apps_exclude": apps_exclude,
+    }
 
 
-def get_wagtail_core_listing_pages_config():
+def get_wagtail_core_listing_pages_config() -> dict:
+    settings_config = get_config()
+
     configuration = {
         "title": "Wagtail core listing pages",
         "apps": [],
     }
 
-    for item in get_listing_pages_config():
-        # if not item["listing_name"]: # TODO decide if this is required, do some testing on real data
-        #     continue
-        if hasattr(settings, "DEVTOOLS_LISTING_EXCLUDE"):
-            if item["listing_name"] in settings.DEVTOOLS_LISTING_EXCLUDE:
-                continue
+    for item in settings_config["listing_pages_config"]:
+        if item["listing_name"] in settings_config["listing_exclude"]:
+            continue
         configuration["apps"].append(
             {
                 "title": item["title"],

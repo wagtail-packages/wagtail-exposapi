@@ -13,7 +13,7 @@ from wagtail.images.models import Image as WagtailImage
 from wagtail.models import Page, Site
 from wagtail.models.collections import Collection
 
-from testapp.home.models import (
+from sandbox.home.models import (
     FormFieldOne,
     FormFieldTwo,
     FormPageOne,
