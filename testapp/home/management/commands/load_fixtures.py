@@ -88,6 +88,7 @@ def update_default_site():
     site = Site.objects.first()
     site.hostname = "localhost"
     site.site_name = "Default Site"
+    site.port = 8000
     site.save()
 
 
