@@ -1,4 +1,3 @@
-from re import template
 from django.db import models
 from django.http import HttpResponse
 from modelcluster.fields import ParentalKey

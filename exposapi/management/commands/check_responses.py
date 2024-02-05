@@ -40,9 +40,7 @@ class Command(BaseCommand):
         login_handler = LoginHandler(options["url"])
         login_handler.login(options["username"], options["password"])
         if not options["all"]:
-            response = login_handler.get_response(
-                f"{options['url']}/exposapi/"
-            )
+            response = login_handler.get_response(f"{options['url']}/exposapi/")
         else:
             response = login_handler.get_response(
                 f"{options['url']}/exposapi/?all=true"
