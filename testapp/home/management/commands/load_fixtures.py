@@ -5,6 +5,7 @@ from django.contrib.auth.models import User
 from django.core.files.images import ImageFile
 from django.core.management import BaseCommand
 from django.db import IntegrityError
+
 from wagtail.contrib.redirects.models import Redirect
 from wagtail.contrib.search_promotions.models import Query, SearchPromotion
 from wagtail.documents.models import Document as WagtailDocument

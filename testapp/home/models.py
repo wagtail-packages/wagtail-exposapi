@@ -1,6 +1,8 @@
 from django.db import models
 from django.http import HttpResponse
+
 from modelcluster.fields import ParentalKey
+
 from wagtail.admin.panels import FieldPanel, FieldRowPanel, InlinePanel, MultiFieldPanel
 from wagtail.contrib.forms.models import AbstractEmailForm, AbstractFormField
 from wagtail.contrib.settings.models import (

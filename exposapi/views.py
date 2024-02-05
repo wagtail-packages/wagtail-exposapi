@@ -2,6 +2,7 @@ from django.apps import apps
 from django.conf import settings
 from django.http import JsonResponse
 from django.urls import reverse
+
 from wagtail.admin.admin_url_finder import AdminURLFinder
 from wagtail.snippets.models import get_snippet_models
 

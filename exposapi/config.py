@@ -1,6 +1,5 @@
 from django.conf import settings
 
-
 LISTING_PAGES_CONFIG = [
     {
         "title": "Search promotions",
