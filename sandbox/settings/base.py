@@ -42,7 +42,7 @@ INSTALLED_APPS = [
     "wagtail.contrib.redirects",
     "wagtail.contrib.search_promotions",
     "wagtail.contrib.settings",
-    "wagtail.contrib.modeladmin" if WAGTAIL_VERSION < (5, 2) else "wagtail_modeladmin",
+    "wagtail_modeladmin" if WAGTAIL_VERSION >= (5, 1) else "wagtail.contrib.modeladmin",
     "wagtail.contrib.routable_page",
     "wagtail.contrib.styleguide",
     "wagtail.embeds",
