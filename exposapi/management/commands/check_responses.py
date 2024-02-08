@@ -95,9 +95,12 @@ class LoginHandler:
         self.session = requests.Session()
 
     def login(self, username, password):
-        login_form = self.session.get(self.login_url)
-        if login_form.status_code == 404:
-            raise Exception("Login page not found")
+        try:
+            login_form = self.session.get(self.login_url)
+            if login_form.status_code == 404:
+                raise Exception("Login page not found")
+        except requests.exceptions.ConnectionError:
+            exit("Server not running")
 
         user = {
             "username": username,
