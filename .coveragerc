@@ -6,3 +6,5 @@ omit =
     */.tox/*
     */.eggs/*
     */manage.py
+
+source = .
