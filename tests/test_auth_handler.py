@@ -1,3 +1,4 @@
+from django.contrib.auth.models import User
 from django.test import TestCase
 
 import requests
@@ -63,16 +64,53 @@ class TestAuthHandler(TestCase):
             login_handler.login("superuser", "superuser")
         self.assertEqual(str(e.exception), "Login page not found")
 
-    # @responses.activate
+    @responses.activate
     # @override_settings(STATICFILES_STORAGE='django.contrib.staticfiles.storage.StaticFilesStorage')
-    # def test_login(self):
-    #     c = self.client.get("http://localhost:8000/admin/login/")
-    #     self.assertEqual(c.status_code, 200)
-    #     print(c.__dict__)
+    def test_login(self):
+        user = User.objects.create_user(
+            username="superuser",
+            email="superuser@example.com",
+            password="superuser",
+            is_superuser=True,
+        )
+        user.save()
 
-    #     responses.add(
-    #         responses.POST,
-    #         "http://localhost:8000/admin/login/",
-    #         status=200,
-    #         content_type="text/html",
-    #     )
+        responses.add(
+            responses.GET,
+            "http://localhost:8000/admin/login/",
+            status=200,
+            content_type="text/html",
+            headers={"Set-Cookie": "csrftoken=1234567890;"},
+        )
+        responses.add(
+            responses.POST,
+            "http://localhost:8000/admin/login/",
+            status=200,
+            content_type="text/html",
+        )
+
+        login_handler = LoginHandler("http://localhost:8000")
+        login_handler.login("superuser", "superuser")
+        self.assertTrue(login_handler.is_authenticated())
+
+    @responses.activate
+    def test_logout(self):
+        responses.add(
+            responses.GET,
+            "http://localhost:8000/admin/login/",
+            status=200,
+            content_type="text/html",
+            headers={"Set-Cookie": "csrftoken=1234567890;"},
+        )
+        responses.add(
+            responses.POST,
+            "http://localhost:8000/admin/login/",
+            status=200,
+            content_type="text/html",
+        )
+
+        login_handler = LoginHandler("http://localhost:8000")
+        login_handler.login("superuser", "superuser")
+        self.assertTrue(login_handler.is_authenticated())
+        login_handler.logout()
+        self.assertFalse(login_handler.is_authenticated())
