@@ -4,16 +4,16 @@ Wagtail Exposapi is a Wagtail plugin that provides a JSON API for your Wagtail s
 
 ## Usage Suggestion
 
-When installed this package will reveal all admin listing page urls and at least one of all edit page urls for Wagtail core models and your own custom models for installed apps.
+When installed a JSON API can be viewed that lists all admin listing page urls and at least one of all edit page urls for Wagtail core models and your own custom models for installed apps.
 
-It does this with zero configuration, by introspecting the installed apps. You cn provided configuration to exclude models or apps from the introspection or provide a full list of apps/models to work with.
+It does this with zero configuration, by introspecting the installed apps. You can provided configuration to exclude models or apps or provide a full list of apps/models to work with.
 
-You can use the JSON api endpoint to get the urls and with this information it's possible to make a get request to each URL and check the response code.
+With this information it's possible to make a get request to each URL and check the response.
 
 ### Site requirements
 
-- It will need a full set of data to work with, so it's best to use a staging or development site data.
-- Your site will need to be running on a server or locally as it needs to check url responses.
+- It will need a full set of data to work with, so it's best to setup staging or development site data.
+- Your site will need to be running on a server or locally so that the urls are accessible.
 
 ### Try it locally
 
@@ -34,7 +34,7 @@ For admin login use `superuser` and `superuser` as the username and password.
 
 `check_responses` - Checks the response codes of all admin listing page urls and at least one of all edit page urls for Wagtail core models and your own custom models for installed apps.
 
-It will report any urls that return a response code other than 200.
+The default behavior is to report any urls that return a response code other than 200.
 
 You can add options to see more details: `--expanded` includes the 200 responses in the output, `--all` includes all responses endpoints in a site (could be slow depending the size of the size).
 
@@ -91,4 +91,6 @@ EXPOSAPI_CONFIG = {
 - Django 3.2, 4.0, 4.1, 4.2
 - Wagtail 4.2, 5.0, 5.1, 5.2
 
-Wagtail 5.1 can be used with wagtail-modeladmin 1.0.0 and wagtail 5.2 can be used with wagtail-modeladmin 2.0.0 Model admin is only required if you still use it in your site.
+Wagtail 5.1 can be used with wagtail-modeladmin 1.0.0 and wagtail 5.2 can be used with wagtail-modeladmin 2.0.0
+
+Model admin is only required if you still use it in your site.
