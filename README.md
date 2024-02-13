@@ -52,7 +52,7 @@ Before it's released you can install it from this repo:
 pip install git+https://github.com/wagtail-packages/wagtail-exposapi.git
 ```
 
-Add `wagtail_exposapi` to your `INSTALLED_APPS` in your Django settings file: **make sure you really want to enable it in your production site.** It doesn't really expose anything sensitive but you may not want to expose your site's internals. You could just add this to your development settings or staging site settings.
+Add `exposapi` to your `INSTALLED_APPS` in your Django settings file: **make sure you really want to enable it in your production site.** It doesn't really expose anything sensitive but you may not want to expose your site's internals. You could just add this to your development settings or staging site settings.
 
 ## Configuration
 
