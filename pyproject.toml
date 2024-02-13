@@ -38,6 +38,10 @@ development = [
 ]
 testing = [
     "coverage==7.4.1",
+    "responses==0.24.1"
+]
+modeladmin2 = [
+    "wagtail-modeladmin>=2.0,<3.0",
 ]
 
 [tool.setuptools.packages.find]

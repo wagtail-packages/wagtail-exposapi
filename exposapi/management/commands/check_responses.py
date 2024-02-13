@@ -2,6 +2,11 @@ from django.core.management.base import BaseCommand
 
 import requests
 
+# Untested code, provided as a convenience for development
+# and testing purposes only.
+# Why not write your own app to do this?
+# You can write is in any language you like.
+
 
 class Command(BaseCommand):
     help = "Check responses of API views."
@@ -37,27 +42,50 @@ class Command(BaseCommand):
         )
 
     def handle(self, *args, **options):
-        login_handler = LoginHandler(options["url"])
-        login_handler.login(options["username"], options["password"])
-        if not options["all"]:
-            response = login_handler.get_response(f"{options['url']}/exposapi/")
+        request = self.login_action(
+            options["url"],
+            options["username"],
+            options["password"],
+        )
+        data = (
+            request.get(f"{options['url']}/exposapi/")
+            if not options["all"]
+            else request.get(f"{options['url']}/exposapi/?all=true")
+        )
+
+        if not data.status_code == 200:
+            exit("Is the server running?")
         else:
-            response = login_handler.get_response(
-                f"{options['url']}/exposapi/?all=true"
-            )
+            self.report(request, data.json(), options["expanded"])
 
-        if not response.status_code == 200:
-            raise Exception("API view not found")
+    def login_action(self, url, username, password):
+        request = requests.Session()
+        login_url = f"{url}/admin/login/"
+        login_form = request.get(login_url)
+        csrftoken = login_form.cookies["csrftoken"]
+        user = {
+            "username": username,
+            "password": password,
+            "csrfmiddlewaretoken": csrftoken,
+        }
+        response = request.post(login_url, data=user)
 
+        if response.status_code == 200:
+            print("Authenticated 🔓")
+            return request
+        else:
+            exit("Authentication failed")
+
+    def report(self, request, data, expanded):
         resp_200 = []
         resp_404 = []
         resp_500 = []
         resp_302 = []
 
-        for item in response.json():
-            response = login_handler.get_response(item["url"])
+        for item in data:
+            response = request.get(item["url"])
             if response.status_code == 200:
-                if options["expanded"]:
+                if expanded:
                     self.stdout.write(
                         self.style.SUCCESS(
                             f"{item['name']} - {item['url']} ({response.status_code})"
@@ -83,44 +111,3 @@ class Command(BaseCommand):
                     f"{item['name']} - {item['url']} ({response.status_code})"
                 )
                 resp_302.append(item["url"])
-
-        login_handler.logout()
-
-
-class LoginHandler:
-    def __init__(self, url):
-        self.url = url
-        self._is_authenticated = False
-        self.login_url = f"{self.url}/admin/login/"
-        self.session = requests.Session()
-
-    def login(self, username, password):
-        login_form = self.session.get(self.login_url)
-        if login_form.status_code == 404:
-            raise Exception("Login page not found")
-
-        user = {
-            "username": username,
-            "password": password,
-            "csrfmiddlewaretoken": login_form.cookies["csrftoken"],
-        }
-        response = self.session.post(self.login_url, data=user)
-        if response.status_code == 200:
-            self._is_authenticated = True
-            print("Authenticated 🔓")
-        return self
-
-    def logout(self):
-        self._is_authenticated = False
-        self.session = requests.Session()
-        print("Logged out 🔒")
-        return self
-
-    def get_response(self, url):
-        # a request that can be used to make authenticated requests
-        # for accessing the wagtail admin pages
-        response = self.session.get(url)
-        return response
-
-    def is_authenticated(self):
-        return self._is_authenticated
