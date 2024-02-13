@@ -5,7 +5,7 @@ import requests
 # Untested code, provided as a convenience for development
 # and testing purposes only.
 # Why not write your own app to do this?
-# You can write is in any language you like.
+# You can write it in any language you like.
 
 
 class Command(BaseCommand):
