@@ -4,7 +4,7 @@ from django.test import LiveServerTestCase
 import requests
 import responses
 
-from exposapi.commands.management.commands.check_responses import (
+from exposapi.responses.management.commands.check_responses import (
     Command as CheckResponsesCommand,
 )
 

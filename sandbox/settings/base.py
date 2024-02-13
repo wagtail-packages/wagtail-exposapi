@@ -64,7 +64,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "django.contrib.sitemaps",
     "exposapi",
-    "exposapi.commands",
+    "exposapi.responses",
     "tests",
 ]
 

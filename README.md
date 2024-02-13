@@ -54,6 +54,18 @@ pip install git+https://github.com/wagtail-packages/wagtail-exposapi.git
 
 Add `exposapi` to your `INSTALLED_APPS` in your Django settings file: **make sure you really want to enable it in your production site.** It doesn't really expose anything sensitive but you may not want to expose your site's internals. You could just add this to your development settings or staging site settings.
 
+If you want to use the `check_responses` command you will need to add `exposapi.commands` to your `INSTALLED_APPS` in your Django settings file.
+
+Update your `urls.py` to include the exposapi urls:
+
+```python
+urlpatterns = [
+    ...,
+    path("exposapi/", include("exposapi.urls")),
+    ...,
+]
+```
+
 ## Configuration
 
 If you want to customise the introspection you can provide the configuration shown below.
