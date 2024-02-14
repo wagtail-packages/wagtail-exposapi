@@ -4,18 +4,28 @@ Wagtail Exposapi is a Wagtail plugin that provides a JSON API for your Wagtail s
 
 ## Usage Suggestion
 
-When installed a JSON API can be viewed that lists all admin listing page urls and at least one of all edit page urls for Wagtail core models and your own custom models for installed apps.
+When installed a JSON API view will list all:
 
-It does this with zero configuration, by introspecting the installed apps. You can provided configuration to exclude models or apps or provide a full list of apps/models to work with.
+- admin listing page urls.
+- at least one of all edit page urls for installed Wagtail core apps.
+- at least one of all edit page type urls for your own models in installed apps.
+- at least one of all page type views for your own models in installed apps.
 
-With this information it's possible to make a get request to each URL and check the response.
+It does this with zero configuration. Ig need be you can provided configuration to exclude models or apps or provide a full list of apps/models to work with.
+
+With this information it's possible to make a get request to each URL and check the response using various external tools or scripts e.g.
+
+- use a tool like Postman to check the responses.
+- create a script to check the responses.
+- use a monitoring service to check the responses.
+- use a CI/CD pipeline to check the responses.
+- and so on.
 
 ### Site requirements
 
-- It will need a full set of data to work with, so it's best to setup staging or development site data.
-- Your site will need to be running on a server or locally so that the urls are accessible.
+If you are checking a site locally it will work best with a full set of data, so it's best to load staging or development site data and the site will need to be running and ready to response to requests.
 
-### Try it locally
+### Try the package locally
 
 This package has a sandbox site that you can use to try it out locally.
 
@@ -30,13 +40,23 @@ Visit `http://localhost:8000/exposapi/` to see the default JSON api endpoint for
 
 For admin login use `superuser` and `superuser` as the username and password.
 
-## Included Commands
+## Included Base Command
 
-`check_responses` - Checks the response codes of all admin listing page urls and at least one of all edit page urls for Wagtail core models and your own custom models for installed apps.
+`BaseResponsesCommand` - A base command that you can extend in your own site to fetch the API data and check the responses.
 
 The default behavior is to report any urls that return a response code other than 200.
 
 You can add options to see more details: `--expanded` includes the 200 responses in the output, `--all` includes all responses endpoints in a site (could be slow depending the size of the size).
+
+Create a new command in your site that extends `BaseResponsesCommand` and override the `get_urls` method to provide the urls to check.
+
+```python
+from exposapi.responses_command import BaseResponsesCommand
+
+
+class Command(BaseResponsesCommand):
+    pass
+```
 
 ## Installation
 

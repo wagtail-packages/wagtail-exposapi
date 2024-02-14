@@ -5,9 +5,9 @@ import requests
 
 class BaseResponsesCommand(BaseCommand):
     help = "Check responses of API views."
-    username = "superuser"
-    password = "superuser"
-    url = "http://localhost:8000"
+    username = None
+    password = None
+    url = None
     # Extend this class to use it in your own site.
 
     def add_arguments(self, parser):  # pragma: no cover
@@ -69,13 +69,14 @@ class BaseResponsesCommand(BaseCommand):
             "password": password,
             "csrfmiddlewaretoken": csrftoken,
         }
-        response = request.post(login_url, data=user)
+        request.post(login_url, data=user)
 
-        if response.status_code == 200:
-            print("Authenticated 🔓")
-            return request
-        else:
-            exit("Authentication failed")  # pragma: no cover
+        if request.cookies.get("sessionid") is None:
+            self.stdout.write(self.style.ERROR("Authentication failed"))
+            exit()
+
+        self.stdout.write("Authenticated 🔓")
+        return request
 
     def report(self, request, data, expanded):
         resp_200 = []
