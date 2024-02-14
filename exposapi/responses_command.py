@@ -2,14 +2,11 @@ from django.core.management.base import BaseCommand
 
 import requests
 
-# Untested code, provided as a convenience for development
-# and testing purposes only.
-# Why not write your own app to do this?
-# You can write it in any language you like.
 
-
-class Command(BaseCommand):
+class BaseResponsesCommand(BaseCommand):
     help = "Check responses of API views."
+
+    # Extend this class to use it in your own site.
 
     def add_arguments(self, parser):
         parser.add_argument(
@@ -47,16 +44,18 @@ class Command(BaseCommand):
             options["username"],
             options["password"],
         )
+
         data = (
-            request.get(f"{options['url']}/exposapi/")
-            if not options["all"]
-            else request.get(f"{options['url']}/exposapi/?all=true")
+            request.get(f"{options['url']}/exposapi/?all=true")
+            if hasattr(options, "all") and options["all"]
+            else request.get(f"{options['url']}/exposapi/")
         )
 
         if not data.status_code == 200:
-            exit("Is the server running?")
-        else:
-            self.report(request, data.json(), options["expanded"])
+            exit("Is the server running?")  # pragma: no cover
+
+        expanded = options["expanded"] if hasattr(options, "expanded") else False
+        self.report(request, data.json(), expanded)
 
     def login_action(self, url, username, password):
         request = requests.Session()
@@ -74,7 +73,7 @@ class Command(BaseCommand):
             print("Authenticated 🔓")
             return request
         else:
-            exit("Authentication failed")
+            exit("Authentication failed")  # pragma: no cover
 
     def report(self, request, data, expanded):
         resp_200 = []
@@ -85,7 +84,7 @@ class Command(BaseCommand):
         for item in data:
             response = request.get(item["url"])
             if response.status_code == 200:
-                if expanded:
+                if expanded:  # pragma: no cover
                     self.stdout.write(
                         self.style.SUCCESS(
                             f"{item['name']} - {item['url']} ({response.status_code})"
