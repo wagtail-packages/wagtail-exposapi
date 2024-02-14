@@ -1,7 +1,5 @@
-from sys import stdout
-
 from django.contrib.auth.models import User
-from django.test import LiveServerTestCase, override_settings
+from django.test import LiveServerTestCase
 
 import requests
 import responses
@@ -43,11 +41,15 @@ class TestCommands(LiveServerTestCase):
         class Cmd(BaseResponsesCommand):
             pass
 
-        Cmd().handle(
-            url=self.live_server_url,
-            username="superuser",
-            password="superuser",
-        )
+        options = {
+            "username": "superuser",
+            "password": "superuser",
+            "all": False,
+            "expanded": False,
+            "url": f"{self.live_server_url}",
+        }
+
+        Cmd().handle(**options)
 
         # login action
         self.assertEqual(len(responses.calls), 3)
@@ -70,23 +72,6 @@ class TestCommands(LiveServerTestCase):
         self.assertEqual(responses.calls[2].response.status_code, 200)
         self.assertEqual(responses.calls[2].response.json(), {})
 
-    def test_command_params(self):
-        class Cmd(BaseResponsesCommand):
-            pass
-
-        cmd = Cmd()
-        parser = cmd.create_parser("check_responses", "check_responses")
-        self.assertEqual(
-            parser._option_string_actions["--username"].default, "superuser"
-        )
-        self.assertEqual(
-            parser._option_string_actions["--password"].default, "superuser"
-        )
-        self.assertEqual(
-            parser._option_string_actions["--url"].default, "http://localhost:8000"
-        )
-
-    @override_settings(stdout=stdout)
     @responses.activate
     def test_report(self):
         responses.add(

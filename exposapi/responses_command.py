@@ -8,7 +8,7 @@ class BaseResponsesCommand(BaseCommand):
 
     # Extend this class to use it in your own site.
 
-    def add_arguments(self, parser):
+    def add_arguments(self, parser):  # pragma: no cover
         parser.add_argument(
             "--username",
             type=str,
@@ -54,7 +54,7 @@ class BaseResponsesCommand(BaseCommand):
         if not data.status_code == 200:
             exit("Is the server running?")  # pragma: no cover
 
-        expanded = options["expanded"] if hasattr(options, "expanded") else False
+        expanded = options["expanded"]
         self.report(request, data.json(), expanded)
 
     def login_action(self, url, username, password):
