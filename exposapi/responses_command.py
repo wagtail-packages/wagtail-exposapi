@@ -5,7 +5,9 @@ import requests
 
 class BaseResponsesCommand(BaseCommand):
     help = "Check responses of API views."
-
+    username = "superuser"
+    password = "superuser"
+    url = "http://localhost:8000"
     # Extend this class to use it in your own site.
 
     def add_arguments(self, parser):  # pragma: no cover
@@ -13,13 +15,13 @@ class BaseResponsesCommand(BaseCommand):
             "--username",
             type=str,
             help="Username to use for login.",
-            default="superuser",
+            default=self.username,
         )
         parser.add_argument(
             "--password",
             type=str,
             help="Password to use for login.",
-            default="superuser",
+            default=self.password,
         )
         parser.add_argument(
             "--all",
@@ -30,7 +32,7 @@ class BaseResponsesCommand(BaseCommand):
             "--url",
             type=str,
             help="The url to test (default=http://localhost:8000)",
-            default="http://localhost:8000",
+            default=self.url,
         )
         parser.add_argument(
             "--expanded",
