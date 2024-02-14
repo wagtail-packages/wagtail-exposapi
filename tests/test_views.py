@@ -70,7 +70,7 @@ class TestMethod(TestCase):
         from sandbox.home.models import HomePage
 
         url = get_item_url(HomePage.objects.first())
-        self.assertEqual(url, "/")
+        self.assertEqual(url, "http://localhost/")
 
     def test_item_result(self):
         """Test item_result."""

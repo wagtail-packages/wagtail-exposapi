@@ -54,7 +54,11 @@ def get_admin_edit_url(item) -> str:
 
 
 def get_item_url(item) -> str:
-    return item.get_url() if hasattr(item, "get_url") and item.get_url() else None
+    return (
+        item.get_full_url()
+        if hasattr(item, "get_full_url") and item.get_full_url()
+        else None
+    )
 
 
 def item_result(app, model, item_url):
