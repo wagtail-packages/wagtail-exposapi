@@ -54,14 +54,12 @@ def get_admin_edit_url(item) -> str:
 
 
 def get_item_url(item) -> str:
-    return (
-        item.get_full_url()
-        if hasattr(item, "get_full_url") and item.get_full_url()
-        else None
-    )
+    if hasattr(item, "get_full_url") and item.get_full_url():
+        return item.get_full_url()
+    return None
 
 
-def item_result(app, model, item_url):
+def item_result(app, model, item_url) -> dict:
     return {
         "group": "SiteViewPage",
         "name": f"{model.__name__} ({app['app_name']})",
@@ -69,11 +67,13 @@ def item_result(app, model, item_url):
     }
 
 
-def admin_edit_result(url, app, model, admin_edit_url):
+def admin_edit_result(url, app, model, admin_edit_url) -> dict:
+    url = url.strip("/")
+    edit_path = admin_edit_url.strip("/")
     return {
         "group": "AdminEditPage",
         "name": f"{model.__name__} ({app['app_name']})",
-        "url": f"{url}{admin_edit_url}",
+        "url": f"{url}/{edit_path}/",
     }
 
 

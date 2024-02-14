@@ -70,6 +70,7 @@ class TestMethod(TestCase):
         from sandbox.home.models import HomePage
 
         url = get_item_url(HomePage.objects.first())
+        print(url)
         self.assertEqual(url, "http://localhost/")
 
     def test_item_result(self):
@@ -78,12 +79,12 @@ class TestMethod(TestCase):
 
         app = {"app_name": "home"}
         model = HomePage
-        item_url = "/"
+        item_url = "http://localhost:8000/"
 
         result = item_result(app, model, item_url)
         self.assertEqual(result["group"], "SiteViewPage")
         self.assertEqual(result["name"], "HomePage (home)")
-        self.assertEqual(result["url"], "/")
+        self.assertEqual(result["url"], "http://localhost:8000/")
 
     def test_admin_edit_result(self):
         """Test admin_edit_result."""
