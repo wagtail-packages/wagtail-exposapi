@@ -11,7 +11,7 @@ When installed a JSON API view will list all:
 - at least one of all edit page type urls for your own models in installed apps.
 - at least one of all page type views for your own models in installed apps.
 
-It does this with zero configuration. Ig need be you can provided configuration to exclude models or apps or provide a full list of apps/models to work with.
+It does this with zero configuration. If need be you can provided configuration to exclude models or apps or provide a full list of apps/models to work with.
 
 With this information it's possible to make a get request to each URL and check the response using various external tools or scripts e.g.
 
@@ -48,7 +48,7 @@ The default behavior is to report any urls that return a response code other tha
 
 You can add options to see more details: `--expanded` includes the 200 responses in the output, `--all` includes all responses endpoints in a site (could be slow depending the size of the size).
 
-Create a new command in your site that extends `BaseResponsesCommand` and override the `get_urls` method to provide the urls to check.
+Create a new command in your site that extends `BaseResponsesCommand`.
 
 ```python
 from exposapi.responses_command import BaseResponsesCommand
@@ -56,6 +56,17 @@ from exposapi.responses_command import BaseResponsesCommand
 
 class Command(BaseResponsesCommand):
     pass
+```
+
+For convenience you can add default options to the command so you don't need to type them each time you run the command.
+
+```python
+class Command(BaseResponsesCommand):
+    # you might want to fetch these from environment variables
+    username = "your-login-username"
+    password = "your-login-password"
+    url = "http://localhost:8000"  # the base url of your site
+    login_url = "/admin/login/"  # the login url for your site
 ```
 
 ## Installation
@@ -73,8 +84,6 @@ pip install git+https://github.com/wagtail-packages/wagtail-exposapi.git
 ```
 
 Add `exposapi` to your `INSTALLED_APPS` in your Django settings file: **make sure you really want to enable it in your production site.** It doesn't really expose anything sensitive but you may not want to expose your site's internals. You could just add this to your development settings or staging site settings.
-
-If you want to use the `check_responses` command you will need to add `exposapi.commands` to your `INSTALLED_APPS` in your Django settings file.
 
 Update your `urls.py` to include the exposapi urls:
 
