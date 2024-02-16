@@ -29,6 +29,7 @@ def app_listings(url) -> list:
     results = []
 
     for app in get_wagtail_core_listing_pages_config()["apps"]:
+        url = url.strip("/")
         list_url = f"{url}{reverse(app['listing_name'])}"
         results.append(
             {
@@ -54,10 +55,12 @@ def get_admin_edit_url(item) -> str:
 
 
 def get_item_url(item) -> str:
-    return item.get_url() if hasattr(item, "get_url") and item.get_url() else None
+    if hasattr(item, "get_full_url") and item.get_full_url():
+        return item.get_full_url()
+    return None
 
 
-def item_result(app, model, item_url):
+def item_result(app, model, item_url) -> dict:
     return {
         "group": "SiteViewPage",
         "name": f"{model.__name__} ({app['app_name']})",
@@ -65,7 +68,7 @@ def item_result(app, model, item_url):
     }
 
 
-def admin_edit_result(url, app, model, admin_edit_url):
+def admin_edit_result(url, app, model, admin_edit_url) -> dict:
     return {
         "group": "AdminEditPage",
         "name": f"{model.__name__} ({app['app_name']})",
@@ -80,6 +83,8 @@ def exposapi_view(request) -> JsonResponse:
         url = config["base_url"]
     else:
         url = request.build_absolute_uri("/")
+
+    url = url.strip("/")
 
     all = True if request.GET.get("all") else False
 
