@@ -5,10 +5,13 @@ import requests
 
 class BaseResponsesCommand(BaseCommand):
     help = "Check responses of API views."
-    username = None
-    password = None
-    url = None
-    # Extend this class to use it in your own site.
+
+    username = "superuser"
+    password = "superuser"
+    url = "http://localhost:8000"
+    login_path = "/admin/login/"
+
+    # Extend this command class to use it in your own site.
 
     def add_arguments(self, parser):  # pragma: no cover
         parser.add_argument(
@@ -35,18 +38,24 @@ class BaseResponsesCommand(BaseCommand):
             default=self.url,
         )
         parser.add_argument(
+            "--login-path",
+            type=str,
+            help="The login url (default=http://localhost:8000/admin/login/)",
+            default=self.login_path,
+        )
+        parser.add_argument(
             "--expanded",
             action="store_true",
             help="Show expanded output.",
         )
 
     def handle(self, *args, **options):
-        request = self.login_action(
-            options["url"],
-            options["username"],
-            options["password"],
-        )
+        request = self.login_action(options)
+        data = self.get_response(options, request)
+        results = data.json() if data else None
+        self.report(request, results, options)
 
+    def get_response(self, options, request):
         data = (
             request.get(f"{options['url']}/exposapi/?all=true")
             if hasattr(options, "all") and options["all"]
@@ -54,40 +63,41 @@ class BaseResponsesCommand(BaseCommand):
         )
 
         if not data.status_code == 200:
-            exit("Is the server running?")  # pragma: no cover
+            self.stdout.write(self.style.ERROR("API not found"))
+            return
 
-        expanded = options["expanded"]
-        self.report(request, data.json(), expanded)
+        return data
 
-    def login_action(self, url, username, password):
+    def login_action(self, options):
         request = requests.Session()
-        login_url = f"{url}/admin/login/"
-        login_form = request.get(login_url)
-        csrftoken = login_form.cookies["csrftoken"]
+        login_form_url = f"{options['url']}{options['login_path']}"
+        form = request.get(login_form_url)
+        csrftoken = form.cookies["csrftoken"]
+
         user = {
-            "username": username,
-            "password": password,
+            "username": options["username"],
+            "password": options["password"],
             "csrfmiddlewaretoken": csrftoken,
         }
-        request.post(login_url, data=user)
+        request.post(login_form_url, data=user)
 
-        if request.cookies.get("sessionid") is None:
+        if request is None or not request.cookies.get("sessionid"):
             self.stdout.write(self.style.ERROR("Authentication failed"))
-            exit()
+            return
 
-        self.stdout.write("Authenticated 🔓")
         return request
 
-    def report(self, request, data, expanded):
+    def report(self, request, results, options):
+
         resp_200 = []
         resp_404 = []
         resp_500 = []
         resp_302 = []
 
-        for item in data:
+        for item in results:
             response = request.get(item["url"])
             if response.status_code == 200:
-                if expanded:  # pragma: no cover
+                if options["expanded"]:
                     self.stdout.write(
                         self.style.SUCCESS(
                             f"{item['name']} - {item['url']} ({response.status_code})"
