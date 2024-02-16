@@ -1,8 +1,13 @@
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 from django.template.response import TemplateResponse
 
+from wagtail import VERSION as WAGTAIL_VERSION
 from wagtail.models import Page
-from wagtail.search.models import Query
+
+if WAGTAIL_VERSION >= (5, 1):
+    from wagtail.contrib.search_promotions.models import Query
+else:
+    from wagtail.search.models import Query
 
 
 def search(request):

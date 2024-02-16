@@ -20,14 +20,16 @@ classifiers = [
     "Framework :: Django :: 3.2",
     "Framework :: Django :: 4.1",
     "Framework :: Django :: 4.2",
+    "Framework :: Django :: 5.0",
     "Framework :: Wagtail",
     "Framework :: Wagtail :: 4",
     "Framework :: Wagtail :: 5",
+    "Framework :: Wagtail :: 6",
 ]
 requires-python = ">=3.8"
 dependencies =[
-    "Wagtail>=4.1,<6.0",
-    "Django>=3.2,<5.0",
+    "Wagtail>=4.1,<6.1",
+    "Django>=3.2,<5.1",
 ]
 
 [project.optional-dependencies]

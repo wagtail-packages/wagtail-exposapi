@@ -6,8 +6,15 @@ from django.core.files.images import ImageFile
 from django.core.management import BaseCommand
 from django.db import IntegrityError
 
+from wagtail import VERSION as WAGTAIL_VERSION
 from wagtail.contrib.redirects.models import Redirect
-from wagtail.contrib.search_promotions.models import Query, SearchPromotion
+
+if WAGTAIL_VERSION >= (5, 1):
+    from wagtail.contrib.search_promotions.models import Query, SearchPromotion
+else:
+    from wagtail.search.models import Query
+    from wagtail.search.models import SearchPromotion
+
 from wagtail.documents.models import Document as WagtailDocument
 from wagtail.images.models import Image as WagtailImage
 from wagtail.models import Page, Site
