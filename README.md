@@ -128,10 +128,10 @@ EXPOSAPI_CONFIG = {
 
 ## Tested With
 
-- Python 3.8, 3.9, 3.10, 3,11
-- Django 3.2, 4.0, 4.1, 4.2
-- Wagtail 4.2, 5.0, 5.1, 5.2
+- Python 3.8, 3.9, 3.10, 3,11, 3.12
+- Django 3.2, 4.0, 4.1, 4.2, 5.0
+- Wagtail 4.1, 4.2, 5.0, 5.1, 5.2, 6.0
 
-Wagtail 5.1 can be used with wagtail-modeladmin 1.0.0 and wagtail 5.2 can be used with wagtail-modeladmin 2.0.0
+Wagtail 5.1 can be used with wagtail-modeladmin 1.0.0 and wagtail 5.2+ can be used with wagtail-modeladmin 2.0.0
 
 Model admin is only required if you still use it in your site.
