@@ -23,7 +23,7 @@ With this information it's possible to make a get request to each URL and check 
 
 ### Site requirements
 
-If you are checking a site locally it will work best with a full set of data, so it's best to load staging or development site data and the site will need to be running and ready to response to requests.
+If you are checking a site locally it will work best with a full set of data, so it's best to load staging or development site data.
 
 ### Try the package locally
 
@@ -48,6 +48,8 @@ The default behavior is to report any urls that return a response code other tha
 
 You can add options to see more details: `--expanded` includes the 200 responses in the output, `--all` includes all responses endpoints in a site (could be slow depending the size of the size).
 
+The command need to be able to login to the site so you need to provide a --username, --password and --url and --login-path, the defaults are `superuser` for the username and password and `http://localhost:8000` for the url and `/admin/login/` for the login path.
+
 Create a new command in your site that extends `BaseResponsesCommand`.
 
 ```python
@@ -66,7 +68,7 @@ class Command(BaseResponsesCommand):
     username = "your-login-username"
     password = "your-login-password"
     url = "http://localhost:8000"  # the base url of your site
-    login_url = "/admin/login/"  # the login url for your site
+    login_path = "/admin/login/"  # the login url for your site
 ```
 
 ## Installation
