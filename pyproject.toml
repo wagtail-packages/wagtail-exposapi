@@ -1,7 +1,8 @@
 [project]
 name = "wagtail-exposapi"
-version = "0.1.0"
+version = "1.0.0"
 description = "Expose Wagtail internals via a REST API for use while developing and testing Wagtail sites."
+readme = "README.md"
 authors = [
     {name = "Nick Moreton", email = "nickmoreton@me.com"}
 ]
@@ -49,3 +50,7 @@ modeladmin2 = [
 [tool.setuptools.packages.find]
 include = ["exposapi"]
 exclude = ["tests*"]
+
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
