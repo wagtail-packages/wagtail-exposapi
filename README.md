@@ -76,13 +76,7 @@ class Command(BaseResponsesCommand):
 Install the package with pip:
 
 ```bash
-pip install wagtail-exposapi # coming soon
-```
-
-Before it's released you can install it from this repo:
-
-```bash
-pip install git+https://github.com/wagtail-packages/wagtail-exposapi.git
+pip install wagtail-exposapi
 ```
 
 Add `exposapi` to your `INSTALLED_APPS` in your Django settings file: **make sure you really want to enable it in your production site.** It doesn't really expose anything sensitive but you may not want to expose your site's internals. You could just add this to your development settings or staging site settings.
