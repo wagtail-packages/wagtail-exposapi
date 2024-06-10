@@ -18,7 +18,11 @@ else:
 from wagtail.documents.models import Document as WagtailDocument
 from wagtail.images.models import Image as WagtailImage
 from wagtail.models import Page, Site
-from wagtail.models.collections import Collection
+
+if WAGTAIL_VERSION >= (6, 0):
+    from wagtail.models.media import Collection
+else:
+    from wagtail.models.collections import Collection
 
 from sandbox.home.models import (
     FormFieldOne,
